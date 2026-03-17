@@ -291,8 +291,9 @@
                 <menu role="tablist">
                     <button class="about-tab active" onclick="switchTab('rules', this)">游戏规则</button>
                     <button class="about-tab" onclick="switchTab('faq', this)">常见问题</button>
-                    <button class="about-tab" onclick="switchTab('review', this)">抽牌逻辑</button>
                     <button class="about-tab" onclick="switchTab('showcase', this)">玩家秀</button>
+                    <button class="about-tab" onclick="switchTab('review', this)">抽牌逻辑</button>
+                    <button class="about-tab" onclick="switchTab('whoareu', this)">关于</button>
                 </menu>
             </div>
 
@@ -496,45 +497,114 @@
             <!-- 玩家秀  -->
             <div id="tab-showcase" role="tabpanel" class="about-tab-content" style="display:none">
                 <div class="about-section">
-                <p>此处收集玩家自创的用法和小巧思。</p>
-                <p>我做了这个游戏，但我也不是完全按规则在玩。玩法不必“标准”，只需有效。世界是你的软体动物。</p>
-                <details class="xp-collapse">
-                    <summary class="faq-item drawer-item xp-collapse-title">
-                        1. 遇到不会的单词怎么办的
-                        <span class="drawer-item-arrow">►</span>
-                    </summary>
-                    <div class="faq-body xp-collapse-body">
-                        <ul>
-                            <li>把牌拖到左下角的“俺寻思”的气泡上。可以快速翻译。</li>
-                            <li>使用的是 mymemory 的免费接口（每天约 5000 字符额度，单次请求不超过 500 字节）。</li>
-                            <li>如果你需要<strong>更专业且详细的词典解释</strong>——鉴于这是一个网页游戏，你可以直接配合浏览器的各种词典插件使用，比如沙拉查词和 Yomitan。</li>
-                        </ul>
-                    </div>
-                </details>
-                <details class="xp-collapse">
-                    <summary class="faq-item drawer-item xp-collapse-title">
-                        2. 日语单词的玩法
-                        <span class="drawer-item-arrow">►</span>
-                    </summary>
-                    <div class="faq-body xp-collapse-body">
-                        <p>可以用「同类词」卡牌做这种东西：
-                        </p>
+                    <p>此处收集玩家自创的用法和小巧思。</p>
+                    <p>我做了这个游戏，但我也不是完全按规则在玩。玩法不必“标准”，只需有效。世界是你的软体动物。</p>
+                    <details class="xp-collapse">
+                        <summary class="faq-item drawer-item xp-collapse-title">
+                            1. 遇到不会的单词怎么办的
+                            <span class="drawer-item-arrow">►</span>
+                        </summary>
+                        <div class="faq-body xp-collapse-body">
+                            <ul>
+                                <li>把牌拖到左下角的“俺寻思”的气泡上。可以快速翻译。</li>
+                                <li>使用的是 mymemory 的免费接口（每天约 5000 字符额度，单次请求不超过 500 字节）。</li>
+                                <li>如果你需要<strong>更专业且详细的词典解释</strong>——鉴于这是一个网页游戏，你可以直接配合浏览器的各种词典插件使用，比如沙拉查词和 Yomitan。</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="xp-collapse">
+                        <summary class="faq-item drawer-item xp-collapse-title">
+                            2. 日语单词的玩法
+                            <span class="drawer-item-arrow">►</span>
+                        </summary>
+                        <div class="faq-body xp-collapse-body">
+                            <p>可以用「同类词」卡牌做这种东西：
+                            </p>
 
-                        <div class="about-img-row">
-                        <img class="about-img" src="img/showcase-jp-sort.jpg" alt="抽牌逻辑示意图" onclick="openLightbox(this)" style="width: 80%;">
-                        <p>把「~」部分使用同一个动词的卡牌放在一起，就能消除。</p>
-                        <p>上面这些句子都是需要在「~」处使用「持つ」的。 </p> 
-                        <p>写成蜘蛛语法的话是这样： </p> 
-                        <p class="code-block">
-                        <code>#持つ: 傘を～・っている (拿着), 費用は主催者が～ (负担), 相当の広さを～庭, 冷蔵庫の中なら一週間は～</code>
-                        </p>
-                    </div>
-                    </div>
-                </details>
+                            <div class="about-img-row">
+                                <img class="about-img" src="img/showcase-jp-sort.jpg" alt="抽牌逻辑示意图" onclick="openLightbox(this)" style="width: 80%;">
+                            </div>
+                            <p>把「~」部分使用同一个动词的卡牌放在一起，就能消除。</p>
+                            <p>上面这些句子都是需要在「~」处使用「持つ」的。 </p> 
+                            <p>写成蜘蛛语法的话是这样： </p> 
+                            <p class="code-block">
+                            <code>#持つ: 傘を～・っている (拿着), 費用は主催者が～ (负担), 相当の広さを～庭, 冷蔵庫の中なら一週間は～</code>
+                            </p>
+                        </div>
+                    </details>
                 </div>
             </div>
 
 
+            <!-- 关于页面 -->
+            <div id="tab-whoareu" role="tabpanel" class="about-tab-content" style="display:none">
+                <div class="about-section">
+                    <div class="about-section-title">世界上为什么会有「胡适开心词场」这种东西</div>
+                    <ul>
+                        <li>
+                            不放在语境里记和用的话，我就记不住单词——尤其是抽象意义的词。
+                            对很多人来说很有帮助的单词抽认应用对我不起作用。
+                        </li>
+                        <li>
+                            我需要那种「连词成句」或者「造句」游戏，但市面上没有。
+                        </li>
+
+                        <li>
+                            于是自己写了一个：<strong>蜘蛛纸牌 × Anki 的杂交物种</strong>。
+                        </li>
+                        <li>
+                            如果你玩过 Windows XP 的蜘蛛纸牌或空档接龙，应该能迅速理解规则。
+                        </li>
+
+                    </ul>
+
+                    <div class="about-section-title">和胡适有什么关系</div>
+                    <ul>
+                    <li>没啥关系。</li>
+                    <li>
+                        这个游戏名来自《胡适日记》里流传甚广的一个梗。
+                    </li>
+                    </ul>
+
+                    <div class="about-img-row">
+                        <img class="about-img" src="img/hushi-ppt.jpg" alt="胡适日记截图。7月4日，新开这本日记，也为了督促自己下个学期多下些苦功。先要读完手边的莎士比亚的《亨利八世》。7月13日，打牌。7月14日，打牌。7月15日，打牌。7月16日，胡适之啊胡适之！你怎么能如此堕落！先前订下的学习计划你都忘了吗？子曰：“吾日三省吾身。”不能再这样下去了！7月17日，打牌。7月18日，打牌。" onclick="openLightbox(this)">
+                    </div>
+
+                    <p>
+                        * 只是一张流传甚广的梗图。其实省略了日记原文中打牌之外做的许多事情。但很令人快乐。
+                    </p>
+
+                    <ul>
+                    <li>
+                        要想出一个简单好记又体现出「用纸牌游戏背anki卡牌」的名字真不容易。
+                    </li>
+                    <li>
+                        「胡适开心词场」原名是「蜘蛛万词王 Spider Wordaire」，但我自己总是拼不对 wordiare，
+                        改成 <strong>Hushi Anki</strong> 之后顺手多了。
+                    </li>
+                    </ul>
+
+
+                    <div class="about-section-title">联络</div>
+                    <p>
+                        胡适开心词场在 <a class="about-link" href="https://github.com/ninefourpark/hushi-anki" target="_blank">GitHub</a> 开源。
+                    </p>
+                    <p>
+                        我是 wuliang。
+                        如果你喜欢这个莫名其妙的游戏，
+                        <a href="mailto:wuliang@tuta.io?subject=Hushi-Anki">请电邮我</a>。
+                    </p>
+                    <p>
+                        Hi, I'm wuliang.
+                        Let me know if things break (or if they're awesome). Find me on
+                        <a class="about-link" href="https://github.com/ninefourpark/hushi-anki" target="_blank">GitHub</a> 
+                        or
+                        <a href="mailto:wuliang@tuta.io?subject=Hushi-Anki">send me an email</a>.
+                    </p>
+                </div>
+            </div>
+
+            </div>
         </div>
     </div>
 </div>

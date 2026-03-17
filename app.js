@@ -1195,13 +1195,13 @@ function getHushiLine() {
 
 const TITLE_LINES = [
     { title: '胡适开心词场', sub: () => getHushiLine() },
-    { title: '胡适开心词场', sub: () => '我不是Anki 我是空档接龙！' },
-    { title: 'Hushi Anki',     sub: () => 'My Anki is Spider Solitaire' },
-    { title: '胡适开心词场', sub: () => '万物皆可 空档接龙！' },
     { title: 'Hushi Anki',     sub: () => 'Solitaire? No, Study!' },
     { title: '胡适开心词场', sub: () => '打牌……读书人的事，能叫打牌么?' },
-    { title: 'Hushi Anki',     sub: () => 'Solitaire for Anki brains' },
     { title: '胡适开心词场', sub: () => '书中自有棋牌室' },
+    { title: 'Hushi Anki',     sub: () => 'My Anki is Spider Solitaire' },
+    { title: '胡适开心词场', sub: () => '我不是Anki 我是空档接龙！' },
+    { title: 'Hushi Anki',     sub: () => 'Solitaire for Anki brains' },
+    { title: '胡适开心词场', sub: () => '万物皆可 空档接龙！' },
 ];
 
 let titleIndex = 0;
