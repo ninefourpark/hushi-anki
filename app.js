@@ -402,7 +402,7 @@ function openDeckEditor(deck_id) {
 
 function confirmDeleteDeck(deck_id, e) {
     e.stopPropagation();
-    if (confirm('确定删除这个词库吗？该操作无法撤销！（你的学习进度数据不会被删除。）')) {
+    if (confirm('确定删除这个词库吗？该操作无法撤销！')) {
         deleteDeck(deck_id);
         if (currentDeckId === deck_id) {
             const reg = getRegistry();
