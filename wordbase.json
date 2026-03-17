@@ -328,7 +328,7 @@
             "content": [
               "Just a trim, please. Don't take too much off the top.",
               "You got it. Long enough to hide your ears?",
-              "Exactly. I’m not ready to show them to the world yet."
+              "Exactly. I'm not ready to show them to the world yet."
             ],
             "id": "a8e9b01a"
           },
@@ -337,14 +337,14 @@
             "content": [
               "You're late again. Traffic?",
               "No, my bed was holding me hostage.",
-              "That’s a serious crime. Get some coffee and get to work."
+              "That's a serious crime. Get some coffee and get to work."
             ],
             "id": "b2dfc598"
           },
           {
 
             "content": [
-              "It’s freezing outside today!",
+              "It's freezing outside today!",
               "Tell me about it. My coffee turned into an ice cream in two minutes.",
               "At least you don't need to buy a fridge."
             ],
@@ -356,7 +356,7 @@
               "My computer won't turn on. Help!",
               "Have you tried turning it off and on again?",
               "Yes, three times. I even asked it nicely to work.",
-              "Okay, let’s try the \"not so nice\" way then."
+              "Okay, let's try the \"not so nice\" way then."
             ],
             "id": "10df8bc4"
           },
@@ -366,7 +366,7 @@
               "Hey, are you busy this Saturday?",
               "That depends. Does it involve moving heavy furniture?",
               "...Actually, yes. How did you know?",
-              "I have a \"moving furniture\" radar. It’s a curse."
+              "I have a \"moving furniture\" radar. It's a curse."
             ],
             "id": "691dbcfe"
           },
@@ -384,9 +384,9 @@
 
             "content": [
               "What is your greatest weakness?",
-              "Sometimes I’m too perfectionist.",
-              "That’s a classic answer. Anything real?",
-              "Okay, I can’t start my brain without three cups of coffee."
+              "Sometimes I'm too perfectionist.",
+              "That's a classic answer. Anything real?",
+              "Okay, I can't start my brain without three cups of coffee."
             ],
             "id": "f743f8ec"
           },
@@ -396,7 +396,7 @@
               "Is the neighborhood quiet at night?",
               "Oh, absolutely. Except for the jazz club downstairs.",
               "Do they play well?",
-              "Well enough that you won’t need a TV."
+              "Well enough that you won't need a TV."
             ],
             "id": "9aed95b3"
           },
@@ -404,7 +404,7 @@
 
             "content": [
               "Your dog is so well-behaved!",
-              "Only when he’s sleeping.",
+              "Only when he's sleeping.",
               "Does he know any tricks?",
               "He can make a whole steak disappear in three seconds."
             ],
@@ -453,7 +453,7 @@
           {
             "id": "002c60b3",
             "content": [
-              "I’d like to send this to London, please.",
+              "I'd like to send this to London, please.",
               "Standard or Express?",
               "How long is \"Standard\"?",
               "About two weeks, if the pigeons are fast.",
@@ -563,7 +563,7 @@
             "content": [
               "I doubt it",
               "I think so",
-              "I’m sure",
+              "I'm sure",
               "No doubt"
             ],
             "hash": "c38ae7a7"
