@@ -658,8 +658,25 @@
         </div>
         <div class="win-panel dialog-body">
             <div class="padding">
-                你赢了！<br>
-                <span id="review-hint"></span>
+                <div style="font-size:16px;font-weight:bold;margin-bottom:10px"> 你赢了！ </div>
+                <div id="win-deck-label" style="font-size:11px;color:#666;margin-bottom:4px;font-family:Tahoma,sans-serif"></div>
+                <div id="win-progress-bar" style="
+                    height:14px;
+                    display:flex;
+                    overflow:hidden;
+                    border-radius:3px;
+                    border:1px solid #ACA899;
+                    margin-bottom:8px;
+                "></div>
+                <div id="win-progress-legend" style="
+                    display:flex;
+                    flex-wrap:wrap;
+                    gap:6px 12px;
+                    font-size:11px;
+                    font-family:Tahoma,sans-serif;
+                    color:#444;
+                    margin-bottom:4px;
+                "></div>
             </div>
             <div class="flex-row gap padding justify-end">
                 <button id="play-again">再来一局</button>

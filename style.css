@@ -737,9 +737,24 @@ body {
     pointer-events:auto;
 }
 
-.win-panel{
+.win-panel {
     animation:winPop .4s ease;
 }
+
+.win-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.win-legend-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
 
 /* 适配 XP 边框样式 */
 .xp-dialog {

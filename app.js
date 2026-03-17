@@ -237,7 +237,7 @@ async function initGame(deck_id) {
     activeGroups = [...reviewSlice, ...newSlice, ...fillSlice];
 
     if (activeGroups.length === 0) {
-        alert('恭喜！本词库所有单词已达到最高记忆等级（Stage）！');
+        alert('恭喜你，通关了！本词库所有单词已达到最高记忆等级（Stage）。是时候看看其他词库了！');
         return;
     }
 
@@ -1086,6 +1086,9 @@ function eliminateGroup(cardElements, groupId) {
         el.style.transform = 'scale(0)';
         el.style.opacity = '0';
     });
+
+    playEliminateSound();
+
     updateMemoryStage(currentDeckId, groupId);
     if (!sessionCompletedHashes.includes(groupId)) sessionCompletedHashes.push(groupId);
     setTimeout(() => {
@@ -1094,6 +1097,42 @@ function eliminateGroup(cardElements, groupId) {
         refreshFlippedState();
         if (document.querySelectorAll('.card').length === 0) handleVictory();
     }, 500);
+}
+
+// 卡牌消除音效。用 Web Audio API 合成
+function playEliminateSound() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // 白噪音模拟纸张摩擦
+        const bufferSize = ctx.sampleRate * 0.08; // 80ms
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = (Math.random() * 2 - 1);
+        }
+
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        // 带通滤波器，保留纸张频率范围，滤掉低频和高频
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 2200;
+        filter.Q.value = 0.8;
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.6, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        noise.start(ctx.currentTime);
+        noise.stop(ctx.currentTime + 0.08);
+
+    } catch (e) {}
 }
 
 // ============================================================
@@ -1117,22 +1156,131 @@ function playWinAnimation() {
     }
 }
 
+function  playWinSound() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // 两个音符叠加，产生"叮"的感觉
+        const notes = [523.25, 783.99]; // C5 + G5
+
+        notes.forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.type = 'square';
+            osc.frequency.value = freq;
+
+            const startTime = ctx.currentTime + i * 0.06; // 两个音符略微错开
+            gain.gain.setValueAtTime(0.18, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.4);
+
+            osc.start(startTime);
+            osc.stop(startTime + 0.4);
+        });
+
+    } catch (e) {
+        // 浏览器不支持或用户未交互，静默失败
+    }
+}
+
 function showWinMessage() {
-    playWinAnimation();
+    playWinAnimation(); 
     setTimeout(() => {
         document.getElementById('win-overlay').classList.add('show');
-        const stats = getStats(), now = Date.now();
-        let latestNextReview = 0;
-        sessionCompletedHashes.forEach(hash => {
-            const s = stats[getStatKey(currentDeckId, hash)];
-            if (s && s.nextReview > latestNextReview) latestNextReview = s.nextReview;
-        });
-        if (latestNextReview === 0) { document.getElementById('review-hint').innerHTML = '本局没有新的复习安排。'; return; }
-        const d = new Date(latestNextReview);
-        const diffDays = Math.ceil((latestNextReview - now) / 86400000);
-        document.getElementById('review-hint').innerHTML =
-            `下次建议复习时间：${d.getMonth() + 1}月${d.getDate()}日（${diffDays <= 1 ? '明天' : diffDays + '天后'}）`;
+        playWinSound();
+        renderProgressBar();
     }, 900);
+}
+
+function renderProgressBar() {
+    const deck = loadDeckById(currentDeckId);
+    if (!deck) return;
+
+    const stats = getStats();
+    const onedayms = 86400000;
+    const cards = deck.cards || [];
+    const total = cards.length;
+    if (total === 0) return;
+
+    let counts = { grad: 0, learning: 0, upcoming: 0, tomorrow: 0, due: 0, unseen: 0 };
+
+    cards.forEach(card => {
+        const s = stats[getStatKey(currentDeckId, card.hash)];
+        if (!s) {
+            counts.unseen++;
+        } else if (s.stage >= 7) {
+            counts.grad++;
+        } else if (Date.now() >= s.nextReview) {
+            counts.due++;
+        } else {
+            // 计算距离下次复习还有几天
+            const diffDays = Math.ceil((s.nextReview - Date.now()) / onedayms);
+            
+            if (diffDays <= 1) {
+                counts.tomorrow++;
+            } else if (diffDays <= 3) {
+                counts.upcoming++;
+            } else {
+                counts.learning++;
+            }
+        }
+    });
+
+
+
+    const colors = {
+        grad: '#4372ff',      //  (完成)
+        due: '#4db5ff',       //  (现在就该学)
+        tomorrow: '#c2d52f',  // (明天)
+        upcoming: '#FFD54F',  //  (后天)
+        learning: '#fff282',  //  (稳固中,超过三天)
+        unseen: '#9E9E9E'     // 灰色 (未开始)
+    };
+
+    const labels = {
+        grad: '掌握', 
+        due: '即将重逢', 
+        tomorrow: '明天再见',
+        upcoming: '3天内再见',
+        learning: '3天后再见',
+        unseen: '没见过'
+    };
+
+    const bar = document.getElementById('win-progress-bar');
+    if (bar) {
+        const order = ['grad', 'due','tomorrow',  'upcoming', 'learning', 'unseen'];
+        bar.innerHTML = order.map(key => {
+            const pct = (counts[key] / total * 100).toFixed(1);
+            if (counts[key] === 0) return '';
+            return `<div style="width:${pct}%;background:${colors[key]};height:100%;transition: width 0.3s;"></div>`;
+        }).join('');
+    }
+
+    // 图例
+    const legend = document.getElementById('win-progress-legend');
+    if (legend) {
+        legend.innerHTML = Object.entries(counts)
+            .filter(([, v]) => v > 0)
+            .sort((a, b) => {
+                const order = ['due', 'tomorrow', 'upcoming', 'learning', 'grad', 'unseen'];
+                return order.indexOf(a[0]) - order.indexOf(b[0]);
+            })
+            .map(([k, v]) =>
+                `<span class="win-legend-item">
+                    <span class="win-legend-dot" style="background:${colors[k]}"></span>
+                    ${labels[k]} ${v}
+                </span>`
+            ).join('');
+    }
+
+    // 词库名
+    const deckLabel = document.getElementById('win-deck-label');
+    if (deckLabel) {
+        deckLabel.textContent = `${deck.deck_metadata.title} · 共 ${total} 组`;
+    }
 }
 
 document.getElementById('play-again').onclick = () => {
