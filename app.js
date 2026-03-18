@@ -927,12 +927,33 @@ function getColUnder(x, y) {
     return el ? el.closest('.sortable-list') : null;
 }
 
-// ---- think-tank 命中检测 ----
-function isOverThinkTank(x, y) {
+// ---- think-tank 俺寻思 命中检测 ----
+function isOverThinkTank(pointerX, pointerY) {
     const tt = document.getElementById('tt-body');
     if (!tt) return false;
-    const r = tt.getBoundingClientRect();
-    return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+
+    // 气泡矩形（带一点 buffer 让对齐更宽松）
+    const buffer = 12;
+    const tr = tt.getBoundingClientRect();
+    const tankL = tr.left   - buffer;
+    const tankR = tr.right  + buffer;
+    const tankT = tr.top    - buffer;
+    const tankB = tr.bottom + buffer;
+
+    if (!drag.ghost) {
+        return pointerX >= tankL && pointerX <= tankR &&
+               pointerY >= tankT && pointerY <= tankB;
+    }
+
+    // ghost 卡牌的实际矩形（左上角 = 指针坐标 - 拖拽偏移）
+    const gL = pointerX - drag.offsetX;
+    const gT = pointerY - drag.offsetY;
+    const gR = gL + drag.cardW;
+    const gB = gT + drag.cardH;
+
+   // 矩形相交
+   // 两个矩形不相交的条件取反（两个矩形不相交只有四种情况（一个完全在另一个的左/右/上/下），取反就是相交条件）
+    return !(gR < tankL || gL > tankR || gB < tankT || gT > tankB);
 }
 
 // ---- 收集随行卡（源卡之后、连续同组、未翻面）----
@@ -1095,6 +1116,16 @@ function onDragMove(e) {
     e.preventDefault();
     const { x, y } = evtXY(e);
     moveGhost(x, y);
+
+    // 每次移动都实时检测是否悬停在 think-tank 俺寻思 上，切换 drag-over class
+    const agentEl = document.getElementById('think-tank');
+    if (agentEl) {
+        if (isOverThinkTank(x, y)) {
+            agentEl.classList.add('drag-over');
+        } else {
+            agentEl.classList.remove('drag-over');
+        }
+    }
 }
 
 function onDragCancel() {
@@ -1121,9 +1152,16 @@ function _endDrag(x, y) {
     const cardH      = drag.cardH;
     const stackStep  = drag.stackStep;
 
+    // 在清空 drag 之前先做 think-tank 命中检测（isOverThinkTank 需要 drag.offsetX/cardW 等）
+    const overTank = (x !== null) && isOverThinkTank(x, y);
+
     drag.ghost      = null;
     drag.sourceCard = null;
     drag.bundled    = [];
+
+    // 拖拽结束，无论落点在哪，都清除 think-tank 俺寻思 高亮
+    const _agentEl = document.getElementById('think-tank');
+    if (_agentEl) _agentEl.classList.remove('drag-over');
 
     // touchcancel / 无效坐标 → 直接飞回
     if (x === null) {
@@ -1131,8 +1169,8 @@ function _endDrag(x, y) {
         return;
     }
 
-    // ---- A. think-tank ----
-    if (isOverThinkTank(x, y)) {
+    // ---- A. think-tank 俺寻思 ----
+    if (overTank) {
         const tt = document.getElementById('tt-body');
         const tr = tt.getBoundingClientRect();
         flyGhost(
