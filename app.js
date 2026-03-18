@@ -232,12 +232,18 @@ async function initGame(deck_id) {
     const reviewSlice = reviewPool.slice(0, maxReview);
     const newSlice = newWordsPool.slice(0, MAX_GROUPS - reviewSlice.length);
 
-    const fillSlice = learningPool.slice(0, MAX_GROUPS - reviewSlice.length - newSlice.length);
-
-    activeGroups = [...reviewSlice, ...newSlice, ...fillSlice];
+    //const fillSlice = learningPool.slice(0, MAX_GROUPS - reviewSlice.length - newSlice.length);
+    // learningPool 里的牌 nextReview 还没到，今天已经学过了，不应该再出现，所以把 fillSlice 删掉了
+    // fillSlice 故意不填。宁可这局牌少于5组，也不把冷却中的牌提前喂给用户
+    activeGroups = [...reviewSlice, ...newSlice];
 
     if (activeGroups.length === 0) {
-        alert('恭喜你，通关了！本词库所有单词已达到最高记忆等级（Stage）。是时候看看其他词库了！');
+        // 所有牌都在冷却（learningPool）或已毕业，今天的学习已完成
+        if (learningPool.length > 0) {
+            alert('今天的牌已经全部学完了！明天（或更久以后）再来吧。是时候看看其他词库了！');
+        } else {
+            alert('恭喜你，通关了！本词库所有单词已达到最高记忆等级（Stage）。是时候看看其他词库了！');
+        }
         return;
     }
 
@@ -1489,7 +1495,7 @@ function renderProgressBar() {
     };
 
     const labels = {
-        grad: '老友永不忘', 
+        grad: '老友', 
         learning: '非常熟悉',
         upcoming: '熟悉',
         due: '待巩固', 
