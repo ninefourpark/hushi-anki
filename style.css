@@ -244,7 +244,7 @@ body {
 /* 有子菜单的项目显示右箭头 */
 .xp-menubar li ul li[aria-haspopup="true"]::after {
     content: "";
-    mask-image: url(menu-right.svg);
+    mask-image: url(img/menu-right.svg);
     background: currentColor;
     mask-size: 4px 7px;
     mask-repeat: no-repeat;
