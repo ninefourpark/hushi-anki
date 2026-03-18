@@ -1489,8 +1489,8 @@ function renderProgressBar() {
         grad: '#4372ff',      //  (完成)
         learning: '#fff282',  //  (三天后复习)
         upcoming: '#FFD54F',  //  (后天复习)
-        due: '#4db5ff',       //  (逾期 + 现在就该学)
         tomorrow: '#c2d52f',  // (明天复习)
+        due: '#4db5ff',       //  (逾期 + 现在就该学)
         unseen: '#9E9E9E'     // 灰色 (未开始)
     };
 
@@ -1498,14 +1498,14 @@ function renderProgressBar() {
         grad: '老友', 
         learning: '非常熟悉',
         upcoming: '熟悉',
-        due: '待巩固', 
         tomorrow: '初识',
+        due: '待巩固', 
         unseen: '陌生'
     };
 
     const bar = document.getElementById('win-progress-bar');
     if (bar) {
-        const order = ['grad', 'learning',  'upcoming', 'due','tomorrow', 'unseen'];
+        const order = ['grad', 'learning',  'upcoming', 'tomorrow', 'due', 'unseen'];
         bar.innerHTML = order.map(key => {
             const pct = (counts[key] / total * 100).toFixed(1);
             if (counts[key] === 0) return '';
