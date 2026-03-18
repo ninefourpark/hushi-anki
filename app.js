@@ -1492,16 +1492,16 @@ function renderProgressBar() {
         learning: '#fff282',  //  (三天后复习)
         upcoming: '#FFD54F',  //  (后天复习)
         tomorrow: '#c2d52f',  // (明天复习)
-        due: '#4db5ff',       //  (逾期 + 现在就该学)
+        due: '#8db2cd',       //  (逾期 + 现在就该学)
         unseen: '#9E9E9E'     // 灰色 (未开始)
     };
 
     const labels = {
-        grad: '老友', 
+        grad: '已掌握', 
         learning: '非常熟悉',
         upcoming: '熟悉',
         tomorrow: '初识',
-        due: '待巩固', 
+        due: '模糊', 
         unseen: '陌生'
     };
 
