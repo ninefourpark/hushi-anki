@@ -171,17 +171,16 @@ async function initGame(deck_id) {
     if (!deck_id && reg.length > 0) deck_id = reg[0].deck_id;
     if (!deck_id) { console.warn('没有可用词库'); return; }
 
-    // 保存用户最后选中的词库
-    localStorage.setItem('last_deck_id', deck_id);
+    // ↓ 删掉这2行。 currentDeckId 和 last_deck_id 故意推迟到确认有牌可玩后再写入，否则弹窗 return 时会污染当前正在游玩的词库状态，导致桌面上是词库2,但消除卡牌的数据写入词库1
+    // localStorage.setItem('last_deck_id', deck_id); // 保存用户最后选中的词库
+    // currentDeckId = deck_id;
 
-    currentDeckId = deck_id;
     const deck = loadDeckById(deck_id);
     if (!deck) { console.warn('词库未找到:', deck_id); return; }
 
-    document.getElementById('level-title').innerText = deck.deck_metadata.title;
-
-    const lang = (deck.deck_metadata.language || ['en'])[0];
-    document.querySelector('.board').dataset.deckLang = lang;
+    //document.getElementById('level-title').innerText = deck.deck_metadata.title;
+    //const lang = (deck.deck_metadata.language || ['en'])[0];
+    //document.querySelector('.board').dataset.deckLang = lang;
 
     const stats = getStats();
     const now = Date.now();
@@ -202,8 +201,6 @@ async function initGame(deck_id) {
         }
     });
 
-    // 随机排序
-    //[reviewPool, newWordsPool, learningPool].forEach(p => p.sort(() => Math.random() - 0.5));
 
     // 错过复习的牌不会有任何惩罚，只是安静地待在 reviewPool 里
     // 但假设用户消失了两周，回来时 reviewPool 里积了 20 张逾期的牌，但每局最多只抽 Math.floor(5 * 0.3) = 1 张复习牌，剩下 19 张只能慢慢排队。新词还在继续涌进来，复习债永远还不完。
@@ -241,6 +238,7 @@ async function initGame(deck_id) {
 
     if (activeGroups.length === 0) {
         // 所有牌都在冷却（learningPool）或已毕业，今天的学习已完成
+        // 不写入 currentDeckId / last_deck_id，保持当前词库不变
         if (learningPool.length > 0) {
             alert('今日牌局已结束，明日君再来。——还未尽兴？去菜单栏看看其他词库吧！');
         } else {
@@ -249,6 +247,14 @@ async function initGame(deck_id) {
         return;
     }
 
+    // 确认有牌可玩，才正式切换词库
+    currentDeckId = deck_id;
+    localStorage.setItem('last_deck_id', deck_id);
+    document.getElementById('level-title').innerText = deck.deck_metadata.title;
+    const lang = (deck.deck_metadata.language || ['en'])[0];
+    document.querySelector('.board').dataset.deckLang = lang;
+
+    
     ThinkTank.init(activeGroups);
     renderBoard();
     updateDeckSelectorUI();
