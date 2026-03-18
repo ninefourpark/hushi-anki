@@ -1513,7 +1513,7 @@ function renderProgressBar() {
         legend.innerHTML = Object.entries(counts)
             .filter(([, v]) => v > 0)
             .sort((a, b) => {
-                const order = ['due', 'tomorrow', 'upcoming', 'learning', 'grad', 'unseen'];
+                const order = ['grad', 'learning', 'upcoming', 'due', 'tomorrow', 'unseen'];
                 return order.indexOf(a[0]) - order.indexOf(b[0]);
             })
             .map(([k, v]) =>
