@@ -240,9 +240,9 @@ async function initGame(deck_id) {
     if (activeGroups.length === 0) {
         // 所有牌都在冷却（learningPool）或已毕业，今天的学习已完成
         if (learningPool.length > 0) {
-            alert('今天的牌已经全部学完了！明天（或更久以后）再来吧。是时候看看其他词库了！');
+            alert('今日牌局结束，明天（或更久以后）再来吧。——还未尽兴？去菜单栏看看其他词库吧！');
         } else {
-            alert('恭喜你，通关了！本词库所有单词已达到最高记忆等级（Stage）。是时候看看其他词库了！');
+            alert('本词库已通关。所有单词已达到最高等级，是时候看看其他词库了！');
         }
         return;
     }
