@@ -74,4 +74,14 @@ Can I help you? // Yes, I need a coat. // What size?
 进度存在浏览器的 localStorage 里，不需要账号。  
 建议定期在「进度 → 导出学习进度」「词库 → 导出当前词库」备份。
 
+## 致谢
+
+### 界面设计
+
+UI 风格模仿 Windows XP。
+视觉参考了 [nielssp/classic-stylesheets](https://github.com/nielssp/classic-stylesheets)（Niels Poulsen，MIT License）。
+
+### 第三方服务
+
+翻译功能由 [MyMemory 翻译 API](https://mymemory.translated.net/doc/spec.php) 提供支持。
 
