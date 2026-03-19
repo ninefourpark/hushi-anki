@@ -254,7 +254,7 @@ async function initGame(deck_id) {
     const lang = (deck.deck_metadata.language || ['en'])[0];
     document.querySelector('.board').dataset.deckLang = lang;
 
-    
+
     ThinkTank.init(activeGroups);
     renderBoard();
     updateDeckSelectorUI();
@@ -937,7 +937,10 @@ function getColUnder(x, y) {
 function isOverThinkTank(pointerX, pointerY) {
     const tt = document.getElementById('tt-body');
     if (!tt) return false;
-
+    
+    // 气泡关闭时不接受拖拽
+    if (tt.classList.contains('bubble-hidden')) return false;
+ 
     // 气泡矩形（带一点 buffer 让对齐更宽松）
     const buffer = 12;
     const tr = tt.getBoundingClientRect();
