@@ -34,7 +34,6 @@ const ThinkTank = (() => {
       };
     });
 
-    _bindDropZone();
     _bindCloseBtn(); // 绑定新的关闭按钮
     _bindAvatarClick(); // 注册精灵点击事件
     
