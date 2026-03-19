@@ -234,9 +234,10 @@ async function initGame(deck_id) {
     //const fillSlice = learningPool.slice(0, MAX_GROUPS - reviewSlice.length - newSlice.length);
     // learningPool 里的牌 nextReview 还没到，今天已经学过了，不应该再出现，所以把 fillSlice 删掉了
     // fillSlice 故意不填。宁可这局牌少于5组，也不把冷却中的牌提前喂给用户
-    activeGroups = [...reviewSlice, ...newSlice];
+    changetothatGroup = [...reviewSlice, ...newSlice];
 
-    if (activeGroups.length === 0) {
+    if (changetothatGroup.length === 0) {
+        // 没有可玩的牌：不覆盖 activeGroups，不切换词库，棋盘保持原状
         // 所有牌都在冷却（learningPool）或已毕业，今天的学习已完成
         // 不写入 currentDeckId / last_deck_id，保持当前词库不变
         if (learningPool.length > 0) {
@@ -244,10 +245,16 @@ async function initGame(deck_id) {
         } else {
             alert('本词库已通关。所有单词已达到最高等级，是时候看看其他词库了！');
         }
+        if (!currentDeckId) {
+            const reg = getRegistry();
+            const fallback = reg.find(r => r.deck_id !== deck_id);
+            if (fallback) initGame(fallback.deck_id);
+        }
         return;
     }
 
     // 确认有牌可玩，才正式切换词库
+    activeGroups = changetothatGroup
     currentDeckId = deck_id;
     localStorage.setItem('last_deck_id', deck_id);
     document.getElementById('level-title').innerText = deck.deck_metadata.title;
@@ -937,7 +944,7 @@ function getColUnder(x, y) {
 function isOverThinkTank(pointerX, pointerY) {
     const tt = document.getElementById('tt-body');
     if (!tt) return false;
-    
+
     // 气泡关闭时不接受拖拽
     if (tt.classList.contains('bubble-hidden')) return false;
  
