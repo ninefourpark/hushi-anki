@@ -34,6 +34,7 @@ const ThinkTank = (() => {
       };
     });
 
+    _bindDropZone();
     _bindCloseBtn(); // 绑定新的关闭按钮
     _bindAvatarClick(); // 注册精灵点击事件
     
@@ -155,25 +156,70 @@ const ThinkTank = (() => {
     return zh;
   }
 
-  // ── 7. 关闭/隐藏按钮 ────────────────────────────────────
-  function _bindCloseBtn() {
-      const closeBtn = document.getElementById(CLOSE_BTN_ID);
-      if (closeBtn) {
-        closeBtn.addEventListener('click', (e) => {
-          e.stopPropagation(); // 阻止冒泡，防止触发精灵的点击事件
-          tankEl.classList.add(BUBBLE_HIDE_CLASS);
-        });
+
+  // ── 5. 判断拖拽落点是否在俺寻思区域 ─────────────────────────
+  function isOverTank(pointerX, pointerY) {
+    
+    if (!tankEl) return false;
+    
+    // 气泡关了，往精灵身上扔就不能触发
+  // 即，如果气泡被隐藏了，则不接收任何卡片
+    if (tankEl.classList.contains(BUBBLE_HIDE_CLASS)) {
+      return false;
+    }
+
+  const rect = tankEl.getBoundingClientRect();
+  
+  // 增加了一点“磁吸”边缘 ，让拖拽更容易触发
+  const buffer = 10; 
+  return (
+    pointerX >= rect.left - buffer &&
+    pointerX <= rect.right + buffer &&
+    pointerY >= rect.top - buffer &&
+    pointerY <= rect.bottom + buffer
+  );
+}
+
+  // ── 6. 拖拽高亮 ──────────────────────────────────────────────
+  function _bindDropZone() {
+    if (!agentEl || !tankEl) return;
+
+    agentEl.addEventListener('dragover', (e) => {
+      // 只有气泡显示时，才阻止默认行为并显示高亮
+      if (!tankEl.classList.contains(BUBBLE_HIDE_CLASS)) {
+        e.preventDefault();
+        agentEl.classList.add('drag-over');
       }
+    });
+
+    agentEl.addEventListener('dragleave', () => {
+      agentEl.classList.remove('drag-over');
+    });
+
+    agentEl.addEventListener('drop', (e) => {
+      e.preventDefault();
+      agentEl.classList.remove('drag-over');
+    });
   }
 
-  // ── 点击精灵显示气泡 ────────────────────────────────
-  function _bindAvatarClick() {
-      const avatarEl = agentEl.querySelector('.clippy-avatar');
-      if (avatarEl) {
-        avatarEl.addEventListener('click', () => {
-          tankEl.classList.toggle(BUBBLE_HIDE_CLASS);
-        });
-      }
+  // ── 7. 关闭/隐藏按钮 (新的) ────────────────────────────────────
+function _bindCloseBtn() {
+    const closeBtn = document.getElementById(CLOSE_BTN_ID);
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // 阻止冒泡，防止触发精灵的点击事件
+        tankEl.classList.add(BUBBLE_HIDE_CLASS);
+      });
+    }
+  }
+// ── 新增：点击精灵显示气泡 ────────────────────────────────
+function _bindAvatarClick() {
+    const avatarEl = agentEl.querySelector('.clippy-avatar');
+    if (avatarEl) {
+      avatarEl.addEventListener('click', () => {
+        tankEl.classList.toggle(BUBBLE_HIDE_CLASS);
+      });
+    }
   }
 
   // ── 8. 内部工具 ─────────────────────────────────────────────────
@@ -188,8 +234,7 @@ const ThinkTank = (() => {
 
 
   // ── 公开接口 ─────────────────────────────────────────────────
-  return { init, receive, getAgentElement: () => agentEl };
-
+  return { init, receive, isOverTank, getAgentElement: () => agentEl };
 })();
 
 
